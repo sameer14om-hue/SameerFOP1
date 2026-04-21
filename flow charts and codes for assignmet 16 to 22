@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foundations of Programming — Assignments 16–22</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0d0f14; --surface:#13161d; --card:#181c25; --border:#252a36;
+  --accent:#4ade80; --accent2:#38bdf8; --text:#e2e8f0; --muted:#64748b;
+  --code-bg:#0a0c10; --kw:#c084fc; --fn:#38bdf8; --str:#86efac;
+  --num:#fb923c; --cmt:#475569; --type:#f472b6;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;min-height:100vh}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:15px 32px;
+  display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100}
+.logo{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:14px;color:#000;flex-shrink:0}
+header h1{font-size:15px;font-weight:700}
+header span{font-size:12px;color:var(--muted);margin-left:5px}
+.tabs-wrap{background:var(--surface);border-bottom:1px solid var(--border);
+  padding:0 32px;display:flex;gap:2px;overflow-x:auto}
+.tab{padding:12px 16px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;
+  border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;
+  font-family:'JetBrains Mono',monospace}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.content{display:none;max-width:1100px;margin:0 auto;padding:32px 24px}
+.content.active{display:block}
+.asgn-badge{display:inline-block;background:rgba(74,222,128,.12);color:var(--accent);
+  border:1px solid rgba(74,222,128,.25);border-radius:6px;padding:3px 10px;
+  font-size:11px;font-weight:700;letter-spacing:.5px;font-family:'JetBrains Mono',monospace;
+  margin-bottom:10px}
+.asgn-title{font-size:21px;font-weight:800;color:var(--text);line-height:1.3}
+.asgn-desc{margin-top:8px;font-size:13px;color:var(--muted);line-height:1.6}
+.asgn-header{margin-bottom:24px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:780px){.cols{grid-template-columns:1fr}}
+.full{grid-column:1/-1}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.card-header{padding:11px 16px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:8px}
+.card-header span{font-size:11px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.4px}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-g{background:var(--accent)}.dot-b{background:var(--accent2)}.dot-p{background:var(--kw)}
+.card-body{padding:16px}
+pre{background:var(--code-bg);border-radius:8px;padding:16px;overflow-x:auto;
+  font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.75;
+  border:1px solid #1a1f2e}
+.kw{color:var(--kw);font-weight:600}.fn{color:var(--fn)}.str{color:var(--str)}
+.num{color:var(--num)}.cmt{color:var(--cmt);font-style:italic}
+.type{color:var(--type)}.pp{color:#fb923c}
+.output-box{background:#050709;border-radius:8px;padding:14px 16px;
+  border:1px solid #1a1f2e;font-family:'JetBrains Mono',monospace;
+  font-size:12px;line-height:1.9;color:#a3e635}
+.output-prompt{color:#475569}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.info-item{background:var(--code-bg);border-radius:8px;padding:10px 12px;
+  border:1px solid #1a1f2e;margin-bottom:0}
+.info-label{font-size:10px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.info-val{font-size:12px;color:var(--text);font-family:'JetBrains Mono',monospace;line-height:1.5}
+.mermaid-wrap{background:var(--code-bg);border-radius:8px;padding:20px;
+  border:1px solid #1a1f2e;display:flex;justify-content:center;overflow-x:auto}
+.mermaid-wrap .mermaid{min-width:280px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">C</div>
+  <div><h1>Foundations of Programming <span>Lab Assignments 16 – 22</span></h1></div>
+</header>
+
+<div class="tabs-wrap">
+  <div class="tab active" onclick="show(16,this)">A#16 — Even/Odd</div>
+  <div class="tab" onclick="show(17,this)">A#17 — Sine Series</div>
+  <div class="tab" onclick="show(18,this)">A#18 — Strings</div>
+  <div class="tab" onclick="show(19,this)">A#19 — Employee</div>
+  <div class="tab" onclick="show(20,this)">A#20 — Pointers</div>
+  <div class="tab" onclick="show(21,this)">A#21 — File Copy</div>
+  <div class="tab" onclick="show(22,this)">A#22 — Menu Strings</div>
+</div>
+
+<!-- ==================== A16 ==================== -->
+<div class="content active" id="a16">
+  <div class="asgn-header">
+    <div class="asgn-badge">ASSIGNMENT NO. 16</div>
+    <div class="asgn-title">Partition List into Even and Odd Numbers</div>
+    <div class="asgn-desc">Accept N integers and split them into two sublists — even and odd — using the modulus operator.</div>
+  </div>
+  <div class="cols">
+    <div class="card full">
+      <div class="card-header"><div class="dot dot-g"></div><span>C Code</span></div>
+      <div class="card-body">
+<pre><span class="pp">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> n, i;
+    <span class="fn">printf</span>(<span class="str">"Enter number of elements: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;n);
+
+    <span class="type">int</span> arr[n], even[n], odd[n];
+    <span class="type">int</span> ec = <span class="num">0</span>, oc = <span class="num">0</span>;
+
+    <span class="fn">printf</span>(<span class="str">"Enter %d integers: "</span>, n);
+    <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; n; i++)
+        <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;arr[i]);
+
+    <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (arr[i] % <span class="num">2</span> == <span class="num">0</span>)
+            even[ec++] = arr[i];
+        <span class="kw">else</span>
+            odd[oc++] = arr[i];
+    }
+
+    <span class="fn">printf</span>(<span class="str">"\nEven numbers are: "</span>);
+    <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; ec; i++) <span class="fn">printf</span>(<span class="str">"%d "</span>, even[i]);
+
+    <span class="fn">printf</span>(<span class="str">"\nOdd numbers are: "</span>);
+    <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; oc; i++) <span class="fn">printf</span>(<span class="str">"%d "</span>, odd[i]);
+
+    <span class="fn">printf</span>(<span class="str">"\n"</span>);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="dot dot-b"></div><span>Sample I/O</span></div>
+      <div class="card-body">
+        <div class="output-box">
+<span class="output-prompt">Input:</span><br>
+Enter number of elements: 5<br>
+Enter 5 integers: 10 7 4 9 12<br><br>
+<span class="output-prompt">Output:</span><br>
+Even numbers are: 10 4 12<br>
+Odd numbers are:  7 9
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="dot dot-p"></div><span>Key Concepts</span></div>
+      <div class="card-body">
+        <div class="info-grid">
+          <div class="info-item"><div class="info-label">Operator</div><div class="info-val">% returns remainder of division</div></div>
+          <div class="info-item"><div class="info-label">Condition</div><div class="info-val">arr[i]%2==0 → Even, else Odd</div></div>
+          <div class="info-item"><div class="info-label">Counters</div><div class="info-val">ec = even count, oc = odd count</div></div>
+          <div class="info-item"><div class="info-label">Arrays</div><div class="info-val">Separate even[] and odd[] storage</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card full">
+      <div class="card-header"><div class="dot dot-g"></div><span>Flowchart</span></div>
+      <div class="card-body">
+        <div class="mermaid-wrap">
+          <div class="mermaid">
+flowchart TD
+    S([START]) --> I1[/Input N/]
+    I1 --> I2[/Input arr of N integers/]
+    I2 --> P1["i = 0,  ec = 0,  oc = 0"]
+    P1 --> D1{"i &lt; N ?"}
+    D1 -- Yes --> D2{"arr[i] % 2 == 0 ?"}
+    D2 -- "Yes (Even)" --> P2["even[ec] = arr[i]&#59;  ec++"]
+    D2 -- "No  (Odd)"  --> P3["odd[oc]  = arr[i]&#59;  oc++"]
+    P2 --> P4["i++"]
+    P3 --> P4
+    P4 --> D1
+    D1 -- No --> O1[/"Print Even numbers: even[0]...even[ec-1]"/]
+    O1 --> O2[/"Print Odd numbers: odd[0]...odd[oc-1]"/]
+    O2 --> E([END])
+
+    style S fill:#166534,stroke:#4ade80,color:#fff
+    style E fill:#166534,stroke:#4ade80,color:#fff
+    style D1 fill:#312e81,stroke:#a78bfa,color:#fff
+    style D2 fill:#312e81,stroke:#a78bfa,color:#fff
+    style I1 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style I2 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style O1 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style O2 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== A17 ==================== -->
+<div class="content" id="a17">
+  <div class="asgn-header">
+    <div class="asgn-badge">ASSIGNMENT NO. 17</div>
+    <div class="asgn-title">Sum of Sine Series (Taylor Expansion)</div>
+    <div class="asgn-desc">sin(x) = x − x³/3! + x⁵/5! − x⁷/7! + … Compute up to N terms for user-given x (radians).</div>
+  </div>
+  <div class="cols">
+    <div class="card full">
+      <div class="card-header"><div class="dot dot-g"></div><span>C Code</span></div>
+      <div class="card-body">
+<pre><span class="pp">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="str">&lt;math.h&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">double</span> x, sum = <span class="num">0.0</span>, term;
+    <span class="type">int</span> n, i, j, power;
+    <span class="type">long</span> <span class="type">long</span> fact;
+
+    <span class="fn">printf</span>(<span class="str">"Enter value of x (in radians): "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%lf"</span>, &amp;x);
+    <span class="fn">printf</span>(<span class="str">"Enter number of terms: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;n);
+
+    <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; n; i++) {
+        power = <span class="num">2</span> * i + <span class="num">1</span>;   <span class="cmt">// 1, 3, 5, 7 ...</span>
+        fact  = <span class="num">1</span>;
+        <span class="kw">for</span> (j = <span class="num">1</span>; j &lt;= power; j++)
+            fact *= j;
+        term = <span class="fn">pow</span>(x, power) / (<span class="type">double</span>)fact;
+        <span class="kw">if</span> (i % <span class="num">2</span> == <span class="num">0</span>) sum += term;
+        <span class="kw">else</span>            sum -= term;
+    }
+
+    <span class="fn">printf</span>(<span class="str">"Sum of sine series = %lf\n"</span>, sum);
+    <span class="kw">return</span> <span class="num">0</span>;
+}
+<span class="cmt">/* Compile: gcc a17.c -o a17 -lm */</span></pre>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="dot dot-b"></div><span>Sample I/O</span></div>
+      <div class="card-body">
+        <div class="output-box">
+<span class="output-prompt">Input:</span><br>
+Enter x (in radians): 1<br>
+Enter number of terms: 5<br><br>
+<span class="output-prompt">Output:</span><br>
+Sum of sine series = 0.841471
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="dot dot-p"></div><span>Formula</span></div>
+      <div class="card-body">
+        <div class="info-item" style="margin-bottom:8px"><div class="info-label">Taylor Series</div><div class="info-val">sin(x) = x - x³/3! + x⁵/5! - ...</div></div>
+        <div class="info-item" style="margin-bottom:8px"><div class="info-label">i-th term</div><div class="info-val">(-1)^i × x^(2i+1) / (2i+1)!</div></div>
+        <div class="info-item"><div class="info-label">Compile</div><div class="info-val">gcc a17.c -o a17 -lm</div></div>
+      </div>
+    </div>
+    <div class="card full">
+      <div class="card-header"><div class="dot dot-g"></div><span>Flowchart</span></div>
+      <div class="card-body">
+        <div class="mermaid-wrap">
+          <div class="mermaid">
+flowchart TD
+    S([START]) --> I1[/"Input x, n"/]
+    I1 --> P1["sum = 0.0,  i = 0"]
+    P1 --> D1{"i &lt; n ?"}
+    D1 -- Yes --> P2["power = 2 × i + 1"]
+    P2 --> P3["Compute fact = power!  via inner loop"]
+    P3 --> P4["term = pow(x, power) / fact"]
+    P4 --> D2{"i % 2 == 0 ?"}
+    D2 -- "Yes (add)" --> P5["sum = sum + term"]
+    D2 -- "No (subtract)" --> P6["sum = sum - term"]
+    P5 --> P7["i++"]
+    P6 --> P7
+    P7 --> D1
+    D1 -- No --> O1[/"Print sum"/]
+    O1 --> E([END])
+
+    style S fill:#166534,stroke:#4ade80,color:#fff
+    style E fill:#166534,stroke:#4ade80,color:#fff
+    style D1 fill:#312e81,stroke:#a78bfa,color:#fff
+    style D2 fill:#312e81,stroke:#a78bfa,color:#fff
+    style I1 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style O1 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== A18 ==================== -->
+<div class="content" id="a18">
+  <div class="asgn-header">
+    <div class="asgn-badge">ASSIGNMENT NO. 18</div>
+    <div class="asgn-title">String Operations in C</div>
+    <div class="asgn-desc">Perform: (i) length, (ii) reversal, (iii) equality check, (iv) palindrome check, (v) substring check.</div>
+  </div>
+  <div class="cols">
+    <div class="card full">
+      <div class="card-header"><div class="dot dot-g"></div><span>C Code</span></div>
+      <div class="card-body">
+<pre><span class="pp">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="str">&lt;string.h&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">char</span> s1[<span class="num">100</span>], s2[<span class="num">100</span>], rev[<span class="num">100</span>];
+    <span class="type">int</span>  len, i;
+
+    <span class="fn">printf</span>(<span class="str">"Enter a string: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%s"</span>, s1);
+
+    <span class="cmt">/* i) Length */</span>
+    len = <span class="fn">strlen</span>(s1);
+    <span class="fn">printf</span>(<span class="str">"Length of string = %d\n"</span>, len);
+
+    <span class="cmt">/* ii) Reversal */</span>
+    <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; len; i++)
+        rev[i] = s1[len - <span class="num">1</span> - i];
+    rev[len] = <span class="str">'\0'</span>;
+    <span class="fn">printf</span>(<span class="str">"Reversed string = %s\n"</span>, rev);
+
+    <span class="cmt">/* iv) Palindrome */</span>
+    <span class="kw">if</span> (<span class="fn">strcmp</span>(s1, rev) == <span class="num">0</span>)
+        <span class="fn">printf</span>(<span class="str">"The string is a Palindrome\n"</span>);
+    <span class="kw">else</span>
+        <span class="fn">printf</span>(<span class="str">"The string is NOT a Palindrome\n"</span>);
+
+    <span class="cmt">/* iii) Equality check */</span>
+    <span class="fn">printf</span>(<span class="str">"Enter another string for equality check: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%s"</span>, s2);
+    <span class="kw">if</span> (<span class="fn">strcmp</span>(s1, s2) == <span class="num">0</span>)
+        <span class="fn">printf</span>(<span class="str">"Strings are equal\n"</span>);
+    <span class="kw">else</span>
+        <span class="fn">printf</span>(<span class="str">"Strings are not equal\n"</span>);
+
+    <span class="cmt">/* v) Substring check */</span>
+    <span class="kw">if</span> (<span class="fn">strstr</span>(s1, s2) != <span class="num">NULL</span>)
+        <span class="fn">printf</span>(<span class="str">"Substring found in main string\n"</span>);
+    <span class="kw">else</span>
+        <span class="fn">printf</span>(<span class="str">"Substring NOT found in main string\n"</span>);
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="dot dot-b"></div><span>Sample I/O</span></div>
+      <div class="card-body">
+        <div class="output-box">
+Enter a string: madam<br>
+Length of string = 5<br>
+Reversed string = madam<br>
+The string is a Palindrome<br><br>
+Enter another string: mad<br>
+Strings are not equal<br>
+Substring found in main string
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="dot dot-p"></div><span>Functions Used</span></div>
+      <div class="card-body">
+        <div class="info-grid">
+          <div class="info-item"><div class="info-label">strlen(s)</div><div class="info-val">Count of chars before '\0'</div></div>
+          <div class="info-item"><div class="info-label">strcmp(a,b)</div><div class="info-val">0 if equal, else non-zero</div></div>
+          <div class="info-item"><div class="info-label">strstr(s,sub)</div><div class="info-val">Pointer if found, else NULL</div></div>
+          <div class="info-item"><div class="info-label">Reversal</div><div class="info-val">rev[i] = s1[len-1-i] in loop</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card full">
+      <div class="card-header"><div class="dot dot-g"></div><span>Flowchart</span></div>
+      <div class="card-body">
+        <div class="mermaid-wrap">
+          <div class="mermaid">
+flowchart TD
+    S([START]) --> I1[/Input s1/]
+    I1 --> P1["len = strlen(s1)"]
+    P1 --> O1[/"Print: Length = len"/]
+    O1 --> P2["Build rev[]: loop — rev[i] = s1[len-1-i]"]
+    P2 --> O2[/"Print: Reversed = rev"/]
+    O2 --> D1{"strcmp(s1, rev) == 0 ?"}
+    D1 -- Yes --> O3[/"Print: String is a Palindrome"/]
+    D1 -- No  --> O4[/"Print: NOT a Palindrome"/]
+    O3 --> I2[/Input s2/]
+    O4 --> I2
+    I2 --> D2{"strcmp(s1, s2) == 0 ?"}
+    D2 -- Yes --> O5[/"Print: Strings are Equal"/]
+    D2 -- No  --> O6[/"Print: Strings are NOT Equal"/]
+    O5 --> D3{"strstr(s1, s2) != NULL ?"}
+    O6 --> D3
+    D3 -- Yes --> O7[/"Print: Substring Found"/]
+    D3 -- No  --> O8[/"Print: Substring NOT Found"/]
+    O7 --> E([END])
+    O8 --> E
+
+    style S fill:#166534,stroke:#4ade80,color:#fff
+    style E fill:#166534,stroke:#4ade80,color:#fff
+    style D1 fill:#312e81,stroke:#a78bfa,color:#fff
+    style D2 fill:#312e81,stroke:#a78bfa,color:#fff
+    style D3 fill:#312e81,stroke:#a78bfa,color:#fff
+    style I1 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style I2 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style O1 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style O2 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style O3 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style O4 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style O5 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style O6 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style O7 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style O8 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== A19 ==================== -->
+<div class="content" id="a19">
+  <div class="asgn-header">
+    <div class="asgn-badge">ASSIGNMENT NO. 19</div>
+    <div class="asgn-title">Employee Structure in C</div>
+    <div class="asgn-desc">struct EMPLOYEE with name, designation, gender, DOJ, salary — compute totals, gender split, salary filter, designation filter.</div>
+  </div>
+  <div class="cols">
+    <div class="card full">
+      <div class="card-header"><div class="dot dot-g"></div><span>C Code</span></div>
+      <div class="card-body">
+<pre><span class="pp">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="str">&lt;string.h&gt;</span>
+
+<span class="kw">struct</span> <span class="type">EMPLOYEE</span> {
+    <span class="type">char</span>  name[<span class="num">50</span>];
+    <span class="type">char</span>  designation[<span class="num">50</span>];
+    <span class="type">char</span>  gender[<span class="num">10</span>];
+    <span class="type">char</span>  doj[<span class="num">15</span>];
+    <span class="type">float</span> salary;
+};
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> n, i, male = <span class="num">0</span>, female = <span class="num">0</span>;
+
+    <span class="fn">printf</span>(<span class="str">"Enter number of employees: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;n);
+
+    <span class="kw">struct</span> <span class="type">EMPLOYEE</span> emp[n];
+
+    <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="fn">printf</span>(<span class="str">"\nEmployee %d:\n"</span>, i + <span class="num">1</span>);
+        <span class="fn">printf</span>(<span class="str">"  Name        : "</span>); <span class="fn">scanf</span>(<span class="str">"%s"</span>, emp[i].name);
+        <span class="fn">printf</span>(<span class="str">"  Designation : "</span>); <span class="fn">scanf</span>(<span class="str">"%s"</span>, emp[i].designation);
+        <span class="fn">printf</span>(<span class="str">"  Gender      : "</span>); <span class="fn">scanf</span>(<span class="str">"%s"</span>, emp[i].gender);
+        <span class="fn">printf</span>(<span class="str">"  Date of Joining: "</span>); <span class="fn">scanf</span>(<span class="str">"%s"</span>, emp[i].doj);
+        <span class="fn">printf</span>(<span class="str">"  Salary      : "</span>); <span class="fn">scanf</span>(<span class="str">"%f"</span>, &amp;emp[i].salary);
+        <span class="kw">if</span> (<span class="fn">strcmp</span>(emp[i].gender, <span class="str">"Male"</span>) == <span class="num">0</span>) male++;
+        <span class="kw">else</span> female++;
+    }
+
+    <span class="fn">printf</span>(<span class="str">"\nTotal employees   = %d\n"</span>, n);
+    <span class="fn">printf</span>(<span class="str">"Male employees    = %d\n"</span>, male);
+    <span class="fn">printf</span>(<span class="str">"Female employees  = %d\n"</span>, female);
+
+    <span class="fn">printf</span>(<span class="str">"\nEmployees with salary &gt; 10000:\n"</span>);
+    <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; n; i++)
+        <span class="kw">if</span> (emp[i].salary &gt; <span class="num">10000</span>)
+            <span class="fn">printf</span>(<span class="str">"  %s (%.2f)\n"</span>, emp[i].name, emp[i].salary);
+
+    <span class="fn">printf</span>(<span class="str">"\nEmployees with designation 'AsstManager':\n"</span>);
+    <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; n; i++)
+        <span class="kw">if</span> (<span class="fn">strcmp</span>(emp[i].designation, <span class="str">"AsstManager"</span>) == <span class="num">0</span>)
+            <span class="fn">printf</span>(<span class="str">"  %s\n"</span>, emp[i].name);
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="dot dot-b"></div><span>Sample I/O</span></div>
+      <div class="card-body">
+        <div class="output-box">
+Emp 1: Ravi AsstManager Male 15000<br>
+Emp 2: Anita Clerk Female 8000<br><br>
+Total employees = 2<br>
+Male = 1 &nbsp; Female = 1<br>
+Salary &gt; 10000: Ravi (15000.00)<br>
+AsstManager: Ravi
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="dot dot-p"></div><span>Structure Fields</span></div>
+      <div class="card-body">
+        <div class="info-grid">
+          <div class="info-item"><div class="info-label">name</div><div class="info-val">char[50]</div></div>
+          <div class="info-item"><div class="info-label">designation</div><div class="info-val">char[50]</div></div>
+          <div class="info-item"><div class="info-label">gender</div><div class="info-val">char[10] — Male/Female</div></div>
+          <div class="info-item"><div class="info-label">doj</div><div class="info-val">char[15] — DD-MM-YYYY</div></div>
+          <div class="info-item"><div class="info-label">salary</div><div class="info-val">float</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card full">
+      <div class="card-header"><div class="dot dot-g"></div><span>Flowchart</span></div>
+      <div class="card-body">
+        <div class="mermaid-wrap">
+          <div class="mermaid">
+flowchart TD
+    S([START]) --> I1[/Input N/]
+    I1 --> P1["i = 0,  male = 0,  female = 0"]
+    P1 --> D1{"i &lt; N ?"}
+    D1 -- Yes --> I2[/"Input emp[i]: name, designation, gender, doj, salary"/]
+    I2 --> D2{"gender == 'Male' ?"}
+    D2 -- Yes --> P2["male++"]
+    D2 -- No  --> P3["female++"]
+    P2 --> P4["i++"]
+    P3 --> P4
+    P4 --> D1
+    D1 -- No --> O1[/"Print: total count, male count, female count"/]
+    O1 --> P5["Loop: Print employees where salary &gt; 10000"]
+    P5 --> P6["Loop: Print employees where designation == AsstManager"]
+    P6 --> E([END])
+
+    style S fill:#166534,stroke:#4ade80,color:#fff
+    style E fill:#166534,stroke:#4ade80,color:#fff
+    style D1 fill:#312e81,stroke:#a78bfa,color:#fff
+    style D2 fill:#312e81,stroke:#a78bfa,color:#fff
+    style I1 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style I2 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style O1 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== A20 ==================== -->
+<div class="content" id="a20">
+  <div class="asgn-header">
+    <div class="asgn-badge">ASSIGNMENT NO. 20</div>
+    <div class="asgn-title">Swap Two Numbers — With &amp; Without Pointers</div>
+    <div class="asgn-desc">Call by Value: original unchanged. Call by Reference (pointers): original is modified directly in memory.</div>
+  </div>
+  <div class="cols">
+    <div class="card full">
+      <div class="card-header"><div class="dot dot-g"></div><span>C Code</span></div>
+      <div class="card-body">
+<pre><span class="pp">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+
+<span class="cmt">/* Call by Value — only local copies are swapped */</span>
+<span class="type">void</span> <span class="fn">swapWithoutPointer</span>(<span class="type">int</span> a, <span class="type">int</span> b) {
+    <span class="type">int</span> temp = a;
+    a = b;
+    b = temp;
+    <span class="fn">printf</span>(<span class="str">"Inside function: a=%d, b=%d\n"</span>, a, b);
+}
+
+<span class="cmt">/* Call by Reference — original variables are changed */</span>
+<span class="type">void</span> <span class="fn">swapWithPointer</span>(<span class="type">int</span> *a, <span class="type">int</span> *b) {
+    <span class="type">int</span> temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> a, b;
+    <span class="fn">printf</span>(<span class="str">"Enter two numbers: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d %d"</span>, &amp;a, &amp;b);
+
+    <span class="fn">printf</span>(<span class="str">"\n-- Without Pointers (Call by Value) --\n"</span>);
+    <span class="fn">swapWithoutPointer</span>(a, b);
+    <span class="fn">printf</span>(<span class="str">"In main: a=%d, b=%d  (unchanged)\n"</span>, a, b);
+
+    <span class="fn">printf</span>(<span class="str">"\n-- With Pointers (Call by Reference) --\n"</span>);
+    <span class="fn">swapWithPointer</span>(&amp;a, &amp;b);
+    <span class="fn">printf</span>(<span class="str">"After swap: a=%d, b=%d\n"</span>, a, b);
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="dot dot-b"></div><span>Sample I/O</span></div>
+      <div class="card-body">
+        <div class="output-box">
+Enter two numbers: 10 20<br><br>
+-- Without Pointers --<br>
+Inside function: a=20, b=10<br>
+In main: a=10, b=20 (unchanged)<br><br>
+-- With Pointers --<br>
+After swap: a=20, b=10
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="dot dot-p"></div><span>Concept Comparison</span></div>
+      <div class="card-body">
+        <div class="info-grid">
+          <div class="info-item"><div class="info-label">Call by Value</div><div class="info-val">Copy of variable passed — original safe</div></div>
+          <div class="info-item"><div class="info-label">Call by Reference</div><div class="info-val">Address passed — original is modified</div></div>
+          <div class="info-item"><div class="info-label">*a</div><div class="info-val">Value at address a</div></div>
+          <div class="info-item"><div class="info-label">&amp;a</div><div class="info-val">Memory address of variable a</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card full">
+      <div class="card-header"><div class="dot dot-g"></div><span>Flowchart</span></div>
+      <div class="card-body">
+        <div class="mermaid-wrap">
+          <div class="mermaid">
+flowchart TD
+    S([START]) --> I1[/"Input a, b"/]
+    I1 --> P1["Call swapWithoutPointer(a, b) — passes copies"]
+    P1 --> P2["Inside fn: temp=a&#59; a=b&#59; b=temp  — local swap only"]
+    P2 --> O1[/"Print inside fn: a and b appear swapped"/]
+    O1 --> O2[/"Print in main: a and b are UNCHANGED — call by value had no effect"/]
+    O2 --> P3["Call swapWithPointer(&a, &b) — passes addresses"]
+    P3 --> P4["Inside fn: temp=*a&#59; *a=*b&#59; *b=temp  — actual memory modified"]
+    P4 --> O3[/"Print in main: a and b are now SWAPPED"/]
+    O3 --> E([END])
+
+    style S fill:#166534,stroke:#4ade80,color:#fff
+    style E fill:#166534,stroke:#4ade80,color:#fff
+    style I1 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style O1 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style O2 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style O3 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style P1 fill:#3b1f09,stroke:#fb923c,color:#fff
+    style P3 fill:#14532d,stroke:#4ade80,color:#fff
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== A21 ==================== -->
+<div class="content" id="a21">
+  <div class="asgn-header">
+    <div class="asgn-badge">ASSIGNMENT NO. 21</div>
+    <div class="asgn-title">File Copy using File Handling</div>
+    <div class="asgn-desc">Open source.txt for reading and destination.txt for writing. Copy one character at a time using fgetc()/fputc() until EOF.</div>
+  </div>
+  <div class="cols">
+    <div class="card full">
+      <div class="card-header"><div class="dot dot-g"></div><span>C Code</span></div>
+      <div class="card-body">
+<pre><span class="pp">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">FILE</span> *src, *dest;
+    <span class="type">int</span>  ch;  <span class="cmt">/* int — NOT char. Required for correct EOF detection */</span>
+
+    src = <span class="fn">fopen</span>(<span class="str">"source.txt"</span>, <span class="str">"r"</span>);
+    <span class="kw">if</span> (src == <span class="num">NULL</span>) {
+        <span class="fn">printf</span>(<span class="str">"Error: Cannot open source.txt\n"</span>);
+        <span class="kw">return</span> <span class="num">1</span>;
+    }
+
+    dest = <span class="fn">fopen</span>(<span class="str">"destination.txt"</span>, <span class="str">"w"</span>);
+    <span class="kw">if</span> (dest == <span class="num">NULL</span>) {
+        <span class="fn">printf</span>(<span class="str">"Error: Cannot create destination.txt\n"</span>);
+        <span class="fn">fclose</span>(src);
+        <span class="kw">return</span> <span class="num">1</span>;
+    }
+
+    <span class="kw">while</span> ((ch = <span class="fn">fgetc</span>(src)) != <span class="num">EOF</span>)
+        <span class="fn">fputc</span>(ch, dest);
+
+    <span class="fn">fclose</span>(src);
+    <span class="fn">fclose</span>(dest);
+    <span class="fn">printf</span>(<span class="str">"File copied successfully.\n"</span>);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="dot dot-b"></div><span>Sample I/O</span></div>
+      <div class="card-body">
+        <div class="output-box">
+<span class="output-prompt">source.txt:</span><br>
+Hello<br>
+Welcome to C Programming<br><br>
+<span class="output-prompt">Output:</span><br>
+File copied successfully.<br><br>
+<span class="output-prompt">destination.txt:</span><br>
+Hello<br>
+Welcome to C Programming
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="dot dot-p"></div><span>File Functions</span></div>
+      <div class="card-body">
+        <div class="info-grid">
+          <div class="info-item"><div class="info-label">fopen(f,"r")</div><div class="info-val">Open for reading</div></div>
+          <div class="info-item"><div class="info-label">fopen(f,"w")</div><div class="info-val">Create/open for writing</div></div>
+          <div class="info-item"><div class="info-label">fgetc(fp)</div><div class="info-val">Read one char; returns EOF at end</div></div>
+          <div class="info-item"><div class="info-label">fputc(c,fp)</div><div class="info-val">Write one char to file</div></div>
+          <div class="info-item"><div class="info-label">EOF</div><div class="info-val">End-of-file sentinel = -1</div></div>
+          <div class="info-item"><div class="info-label">fclose(fp)</div><div class="info-val">Close and flush the file</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card full">
+      <div class="card-header"><div class="dot dot-g"></div><span>Flowchart</span></div>
+      <div class="card-body">
+        <div class="mermaid-wrap">
+          <div class="mermaid">
+flowchart TD
+    S([START]) --> P1["src = fopen('source.txt', 'r')"]
+    P1 --> D1{"src == NULL ?"}
+    D1 -- Yes --> O1[/"Print: Error opening source file"/]
+    O1 --> E([END])
+    D1 -- No  --> P2["dest = fopen('destination.txt', 'w')"]
+    P2 --> D2{"dest == NULL ?"}
+    D2 -- Yes --> P3["fclose(src)"]
+    P3 --> O2[/"Print: Error creating destination"/]
+    O2 --> E
+    D2 -- No  --> P4["ch = fgetc(src)"]
+    P4 --> D3{"ch == EOF ?"}
+    D3 -- No  --> P5["fputc(ch, dest)"]
+    P5 --> P4
+    D3 -- Yes --> P6["fclose(src)   fclose(dest)"]
+    P6 --> O3[/"Print: File copied successfully"/]
+    O3 --> E
+
+    style S fill:#166534,stroke:#4ade80,color:#fff
+    style E fill:#166534,stroke:#4ade80,color:#fff
+    style D1 fill:#312e81,stroke:#a78bfa,color:#fff
+    style D2 fill:#312e81,stroke:#a78bfa,color:#fff
+    style D3 fill:#312e81,stroke:#a78bfa,color:#fff
+    style O1 fill:#7f1d1d,stroke:#f87171,color:#fff
+    style O2 fill:#7f1d1d,stroke:#f87171,color:#fff
+    style O3 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== A22 ==================== -->
+<div class="content" id="a22">
+  <div class="asgn-header">
+    <div class="asgn-badge">ASSIGNMENT NO. 22</div>
+    <div class="asgn-title">Menu-Driven String Operations (Built-in Functions)</div>
+    <div class="asgn-desc">do-while menu using strlen, strcpy, strcat, strcmp, and manual reversal. Loop repeats until user chooses Exit.</div>
+  </div>
+  <div class="cols">
+    <div class="card full">
+      <div class="card-header"><div class="dot dot-g"></div><span>C Code</span></div>
+      <div class="card-body">
+<pre><span class="pp">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="str">&lt;string.h&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">char</span> s1[<span class="num">100</span>], s2[<span class="num">100</span>];
+    <span class="type">int</span>  choice, i, len;
+
+    <span class="fn">printf</span>(<span class="str">"Enter first string : "</span>); <span class="fn">scanf</span>(<span class="str">"%s"</span>, s1);
+    <span class="fn">printf</span>(<span class="str">"Enter second string: "</span>); <span class="fn">scanf</span>(<span class="str">"%s"</span>, s2);
+
+    <span class="kw">do</span> {
+        <span class="fn">printf</span>(<span class="str">"\n=== String Operations Menu ===\n"</span>);
+        <span class="fn">printf</span>(<span class="str">"1. Length      (strlen)\n"</span>);
+        <span class="fn">printf</span>(<span class="str">"2. Copy        (strcpy)\n"</span>);
+        <span class="fn">printf</span>(<span class="str">"3. Concatenate (strcat)\n"</span>);
+        <span class="fn">printf</span>(<span class="str">"4. Compare     (strcmp)\n"</span>);
+        <span class="fn">printf</span>(<span class="str">"5. Reverse s1\n"</span>);
+        <span class="fn">printf</span>(<span class="str">"6. Exit\n"</span>);
+        <span class="fn">printf</span>(<span class="str">"Choice: "</span>); <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;choice);
+
+        <span class="kw">switch</span> (choice) {
+            <span class="kw">case</span> <span class="num">1</span>:
+                <span class="fn">printf</span>(<span class="str">"Length = %d\n"</span>, (<span class="type">int</span>)<span class="fn">strlen</span>(s1)); <span class="kw">break</span>;
+            <span class="kw">case</span> <span class="num">2</span>: {
+                <span class="type">char</span> copy[<span class="num">100</span>]; <span class="fn">strcpy</span>(copy, s1);
+                <span class="fn">printf</span>(<span class="str">"Copied: %s\n"</span>, copy); <span class="kw">break</span>; }
+            <span class="kw">case</span> <span class="num">3</span>: {
+                <span class="type">char</span> cat[<span class="num">200</span>]; <span class="fn">strcpy</span>(cat, s1); <span class="fn">strcat</span>(cat, s2);
+                <span class="fn">printf</span>(<span class="str">"Concatenated: %s\n"</span>, cat); <span class="kw">break</span>; }
+            <span class="kw">case</span> <span class="num">4</span>:
+                <span class="fn">printf</span>(<span class="fn">strcmp</span>(s1, s2) == <span class="num">0</span> ? <span class="str">"EQUAL\n"</span> : <span class="str">"NOT equal\n"</span>); <span class="kw">break</span>;
+            <span class="kw">case</span> <span class="num">5</span>: {
+                <span class="type">char</span> rev[<span class="num">100</span>]; len = <span class="fn">strlen</span>(s1);
+                <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; len; i++) rev[i] = s1[len - <span class="num">1</span> - i];
+                rev[len] = <span class="str">'\0'</span>;
+                <span class="fn">printf</span>(<span class="str">"Reversed: %s\n"</span>, rev); <span class="kw">break</span>; }
+            <span class="kw">case</span> <span class="num">6</span>:
+                <span class="fn">printf</span>(<span class="str">"Exiting...\n"</span>); <span class="kw">break</span>;
+            <span class="kw">default</span>:
+                <span class="fn">printf</span>(<span class="str">"Invalid choice!\n"</span>);
+        }
+    } <span class="kw">while</span> (choice != <span class="num">6</span>);
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="dot dot-b"></div><span>Sample I/O</span></div>
+      <div class="card-body">
+        <div class="output-box">
+Enter first string : Hello<br>
+Enter second string: World<br><br>
+Choice 3 → Concatenated: HelloWorld<br>
+Choice 1 → Length = 5<br>
+Choice 5 → Reversed: olleH<br>
+Choice 4 → NOT equal<br>
+Choice 6 → Exiting...
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="dot dot-p"></div><span>Built-in Functions</span></div>
+      <div class="card-body">
+        <div class="info-grid">
+          <div class="info-item"><div class="info-label">strlen(s)</div><div class="info-val">Length — chars before '\0'</div></div>
+          <div class="info-item"><div class="info-label">strcpy(d,s)</div><div class="info-val">Copy string s into d</div></div>
+          <div class="info-item"><div class="info-label">strcat(d,s)</div><div class="info-val">Append s to end of d</div></div>
+          <div class="info-item"><div class="info-label">strcmp(a,b)</div><div class="info-val">0=equal, else non-zero</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card full">
+      <div class="card-header"><div class="dot dot-g"></div><span>Flowchart</span></div>
+      <div class="card-body">
+        <div class="mermaid-wrap">
+          <div class="mermaid">
+flowchart TD
+    S([START]) --> I1[/"Input s1, s2"/]
+    I1 --> O1[/"Display Menu: 1-Length  2-Copy  3-Concat  4-Compare  5-Reverse  6-Exit"/]
+    O1 --> I2[/Input choice/]
+    I2 --> D1{"choice ?"}
+    D1 -- "1" --> P1["strlen(s1) → Print length"]
+    D1 -- "2" --> P2["strcpy(copy, s1) → Print copy"]
+    D1 -- "3" --> P3["strcpy + strcat(s1,s2) → Print result"]
+    D1 -- "4" --> P4["strcmp(s1,s2) → Print Equal or NOT Equal"]
+    D1 -- "5" --> P5["Reverse loop on s1 → Print rev"]
+    D1 -- "6" --> P6[/"Print: Exiting"/]
+    D1 -- "other" --> P7[/"Print: Invalid choice"/]
+    P1 --> D2{"choice == 6 ?"}
+    P2 --> D2
+    P3 --> D2
+    P4 --> D2
+    P5 --> D2
+    P6 --> D2
+    P7 --> D2
+    D2 -- "No — loop back" --> O1
+    D2 -- Yes --> E([END])
+
+    style S fill:#166534,stroke:#4ade80,color:#fff
+    style E fill:#166534,stroke:#4ade80,color:#fff
+    style D1 fill:#312e81,stroke:#a78bfa,color:#fff
+    style D2 fill:#312e81,stroke:#a78bfa,color:#fff
+    style I1 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style O1 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style I2 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style P6 fill:#0c4a6e,stroke:#38bdf8,color:#fff
+    style P7 fill:#7f1d1d,stroke:#f87171,color:#fff
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'dark',
+  flowchart: { curve: 'linear', padding: 24, useMaxWidth: true },
+  themeVariables: {
+    primaryColor: '#1e293b',
+    primaryTextColor: '#e2e8f0',
+    primaryBorderColor: '#4ade80',
+    lineColor: '#4ade80',
+    secondaryColor: '#0f172a',
+    edgeLabelBackground: '#181c25',
+    fontFamily: 'Sora, sans-serif',
+    fontSize: '14px'
+  }
+});
+
+function show(num, tab) {
+  document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('a' + num).classList.add('active');
+  tab.classList.add('active');
+}
+</script>
+</body>
+</html>
